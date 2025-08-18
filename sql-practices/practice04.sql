@@ -47,27 +47,25 @@ ORDER BY c.salary DESC;
 -- 문제3.
 -- 현재, 사원 자신들의 부서의 평균급여보다 급여가 많은 사원들의 사번, 이름 그리고 급여를 조회하세요.
 SELECT 
-    b.emp_no, b.first_name, c.salary
+    employees.emp_no AS '사번', employees.first_name AS '이름', salary AS '급여'
 FROM
-    dept_emp a
+    employees 
         JOIN
-    employees b ON a.emp_no = b.emp_no
-        JOIN
-    salaries c ON b.emp_no = c.emp_no
-        JOIN
+    salaries ON a.emp_no = c.emp_no,
     (SELECT -- 부서별 평균급여
         a.dept_no, AVG(b.salary) AS avg_salary
     FROM
-        dept_emp a join salaries b on a.emp_no = b.emp_no
+        dept_emp a 
+			JOIN
+		salaries b ON a.emp_no = b.emp_no
     WHERE
         a.to_date = '9999-01-01'
             AND b.to_date = '9999-01-01'
-    GROUP BY a.dept_no) d ON a.dept_no = d.dept_no
+    GROUP BY a.dept_no) AS sub
 WHERE
     a.to_date = '9999-01-01'
         AND c.to_date = '9999-01-01'
-        AND c.salary > d.avg_salary
-ORDER BY c.salary DESC;
+        AND c.salary > sub.avg_salary;
 
 -- 문제4.
 -- 현재, 사원들의 사번, 이름, 그리고 매니저 이름과 부서 이름을 출력해 보세요.
@@ -212,3 +210,17 @@ WHERE
                 sa.to_date = '9999-01-01'
                     AND sb.to_date = '9999-01-01'
             GROUP BY sa.title) sub);
+
+-- LIMIT
+SELECT 
+    a.title, AVG(b.salary) AS avg_salary
+FROM
+    titles a
+        JOIN
+    salaries b ON a.emp_no = b.emp_no
+WHERE
+    a.to_date = '9999-01-01'
+        AND b.to_date = '9999-01-01'
+GROUP BY a.title
+ORDER BY AVG(b.salary) DESC
+LIMIT 1;
