@@ -3,19 +3,27 @@ package example;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DeleteEx02 {
+public class SelectEx02 {
 
 	public static void main(String[] args) {
-		delete(6L);
+		List<DeptVo> list = search("개발");
+
+		for (DeptVo vo : list) {
+			System.out.println(vo);
+		}
 	}
 
-	private static boolean delete(long id) {
+	private static List<DeptVo> search(String keyword) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 
-		boolean result = false;
+		List<DeptVo> result = new ArrayList<>();
 
 		try {
 			// 1. JDBC Driver 로드
@@ -27,24 +35,33 @@ public class DeleteEx02 {
 
 			// 3. Statement 준비
 			// ? : 바인딩 파라미터, 나중에 값 설정 가능
-			String sql = "delete from dept where id = ?";
+			String sql = "select id, name from dept where name like ?";
 			pstmt = con.prepareStatement(sql);
 
 			// 4. Parameter Binding
 			// 1번째 ? 에 id 값 설정
-			pstmt.setLong(1, id);
+			pstmt.setString(1, "%" + keyword + "%");
 
 			// 5. SQL 실행
-			int count = pstmt.executeUpdate();
+			rs = pstmt.executeQuery();
 
-			result = (count == 1);
+			// 6. 결과처리, ResultSet 순회
+			while (rs.next()) {
+				Long id = rs.getLong(1);
+				String name = rs.getString(2);
+
+				result.add(new DeptVo(id, name));
+			}
 
 		} catch (ClassNotFoundException e) {
 			System.out.println("Driver Class Not Found");
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
-		} finally {
+		} finally {// 자원정리
 			try {
+				if (rs != null) {
+					rs.close();
+				}
 				if (pstmt != null) {
 					pstmt.close();
 				}

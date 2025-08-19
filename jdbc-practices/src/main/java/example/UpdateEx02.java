@@ -5,13 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DeleteEx02 {
+public class UpdateEx02 {
 
 	public static void main(String[] args) {
-		delete(6L);
+		update(new DeptVo(1L, "경영지원팀"));
 	}
 
-	private static boolean delete(long id) {
+	private static boolean update(DeptVo vo) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -27,12 +27,13 @@ public class DeleteEx02 {
 
 			// 3. Statement 준비
 			// ? : 바인딩 파라미터, 나중에 값 설정 가능
-			String sql = "delete from dept where id = ?";
+			String sql = "update dept set name = ? where id = ?";
 			pstmt = con.prepareStatement(sql);
 
 			// 4. Parameter Binding
 			// 1번째 ? 에 id 값 설정
-			pstmt.setLong(1, id);
+			pstmt.setString(1, vo.getName());
+			pstmt.setLong(2, vo.getId());
 
 			// 5. SQL 실행
 			int count = pstmt.executeUpdate();

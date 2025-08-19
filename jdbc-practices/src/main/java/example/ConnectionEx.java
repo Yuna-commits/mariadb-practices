@@ -2,20 +2,12 @@ package example;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DeleteEx02 {
+public class ConnectionEx {
 
 	public static void main(String[] args) {
-		delete(6L);
-	}
-
-	private static boolean delete(long id) {
 		Connection con = null;
-		PreparedStatement pstmt = null;
-
-		boolean result = false;
 
 		try {
 			// 1. JDBC Driver 로드
@@ -25,29 +17,13 @@ public class DeleteEx02 {
 			String url = "jdbc:mariadb://192.168.0.181:3306/webdb";
 			con = DriverManager.getConnection(url, "webdb", "webdb");
 
-			// 3. Statement 준비
-			// ? : 바인딩 파라미터, 나중에 값 설정 가능
-			String sql = "delete from dept where id = ?";
-			pstmt = con.prepareStatement(sql);
-
-			// 4. Parameter Binding
-			// 1번째 ? 에 id 값 설정
-			pstmt.setLong(1, id);
-
-			// 5. SQL 실행
-			int count = pstmt.executeUpdate();
-
-			result = (count == 1);
-
+			System.out.println("연결성공");
 		} catch (ClassNotFoundException e) {
 			System.out.println("Driver Class Not Found");
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
 		} finally {
 			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
 				if (con != null) {
 					con.close();
 				}
@@ -55,7 +31,6 @@ public class DeleteEx02 {
 				e.printStackTrace();
 			}
 		}
-		return result;
 	}
 
 }

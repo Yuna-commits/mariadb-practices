@@ -7,8 +7,8 @@ import java.sql.SQLException;
 
 public class InsertEx02 {
 	public static void main(String[] args) {
-		insert("개발1팀");
-		insert("개발2팀");
+		insert("개발3팀");
+		insert("개발4팀");
 	}
 
 	public static boolean insert(String department) {
