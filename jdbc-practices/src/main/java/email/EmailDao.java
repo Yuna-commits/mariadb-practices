@@ -10,18 +10,12 @@ import java.util.List;
 
 public class EmailDao {
 	public int deleteByEmail(String email) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-
 		int result = 0;
 
-		try {
-			con = getConnection();
-
-			// Statement 준비
-			String sql = "delete from email where email = ?";
-			pstmt = con.prepareStatement(sql);
-
+		try (
+				Connection con = getConnection();
+				PreparedStatement pstmt = con.prepareStatement("delete from email where email = ?");
+		) {
 			// Parameter Binding
 			pstmt.setString(1, email);
 
@@ -29,34 +23,19 @@ public class EmailDao {
 
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
+
 		return result;
 	}
 
 	public int insert(EmailVo vo) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-
 		int result = 0;
 
-		try {
-			con = getConnection();
-
-			// Statement 준비
-			String sql = "insert into email(first_name, last_name, email) values (?, ?, ?)";
-			pstmt = con.prepareStatement(sql);
-
+		try (
+				Connection con = getConnection();
+				PreparedStatement pstmt = con
+						.prepareStatement("insert into email(first_name, last_name, email) values (?, ?, ?)");
+		) {
 			// Parameter Binding
 			pstmt.setString(1, vo.getFirstName());
 			pstmt.setString(2, vo.getLastName());
@@ -66,36 +45,18 @@ public class EmailDao {
 
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
+
 		return result;
 	}
 
 	public List<EmailVo> findAll() {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
 		List<EmailVo> result = new ArrayList<EmailVo>();
 
-		try {
-			con = getConnection();
-
-			// Statement 준비
-			String sql = "select id, first_name, last_name, email from email order by id desc";
-			pstmt = con.prepareStatement(sql);
-
-			rs = pstmt.executeQuery();
+		try (Connection con = getConnection();
+				PreparedStatement pstmt = con
+						.prepareStatement("select id, first_name, last_name, email from email order by id desc");
+				ResultSet rs = pstmt.executeQuery();) {
 
 			while (rs.next()) {
 				Long id = rs.getLong(1);
@@ -114,61 +75,27 @@ public class EmailDao {
 
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
+
 		return result;
 	}
 
 	public Long count() {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
 		Long result = 0L;
 
-		try {
-			con = getConnection();
-
-			// Statement 준비
-			String sql = "select count(*) from email";
-			pstmt = con.prepareStatement(sql);
-
-			rs = pstmt.executeQuery();
-
+		try (		
+				Connection con = getConnection();
+				PreparedStatement pstmt = con.prepareStatement("select count(*) from email");
+				ResultSet rs = pstmt.executeQuery();
+		){
 			if (rs.next()) {
 				result = rs.getLong(1);
 			}
 
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		} 
+		
 		return result;
 	}
 
