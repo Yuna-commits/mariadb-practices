@@ -12,7 +12,7 @@ public class EmailApp {
 			System.out.print("(l)ist (d)elete (i)nsert (q)uit > ");
 			String command = scanner.nextLine();
 
-			if ("l".equals(command)) {
+			if ("l".equals(command)) {// DB 리스트 출력
 				doList();
 			} else if ("d".equals(command)) {
 				doDelete();
@@ -42,11 +42,11 @@ public class EmailApp {
 		vo.setFirstName(firstName);
 		vo.setLastName(lastName);
 		vo.setEmail(email);
-		
+
 		new EmailDao().insert(vo);
 
 		doList();
-	}
+	} 
 
 	private static void doDelete() {
 		System.out.println("doDelete");

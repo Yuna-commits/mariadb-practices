@@ -10,10 +10,20 @@
 	<artifactId>jdbc-practices</artifactId>
 
 	<dependencies>
+
+		<!-- mariadb jdbc driver -->
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
 			<version>3.5.2</version>
+		</dependency>
+
+		<!-- junit jupiter -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.12.2</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
