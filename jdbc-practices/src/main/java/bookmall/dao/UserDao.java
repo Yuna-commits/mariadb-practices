@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-import bookmall.vo.CartVo;
 import bookmall.vo.UserVo;
 
 public class UserDao {
@@ -21,9 +21,9 @@ public class UserDao {
 			PreparedStatement pstmt2 = conn.prepareStatement("select last_insert_id()");
 		) {
 			/**
-			 * pstmt1의 insert문의 실행으로 user 테이블의 pk_no에는 auto_increment된 값이 저장됨 자바는 그 값을 모름!
-			 * setNo()를 위해 select last_insert_id()로 **같은 DB conn 내**에서 가장 최근에
-			 * auto_increment된 값을 알아야 함
+			 * pstmt1의 insert문의 실행으로 user 테이블의 pk_no에는 auto_increment된 값이 저장, 자바는 그 값을 모름
+			 * UserVo.setNo()를 위해 select last_insert_id()로
+			 * **같은 DB conn 내**에서 **가장 마지막에 insert한 테이블**의 auto_increment된 값을 알아야 함
 			 */
 			// INSERT
 			pstmt1.setString(1, vo.getName());
@@ -33,11 +33,16 @@ public class UserDao {
 			
 			// SQL 쿼리를 DB에 실행
 			count = pstmt1.executeUpdate();
-
-			// SELECT LAST_INSERT_ID(자신의 pk_no)
-			ResultSet rs = pstmt2.executeQuery();
-			vo.setNo(rs.next() ? rs.getLong(1) : null);
-			rs.close();
+			
+			/**
+			 * UserVo.setNo()가 필요한 이유
+			 * user는 orders, cart와 1:N 관계 -> OrderVo, CartVo에 userNo가 존재해야 함
+			 * UserDao를 먼저 생성하여 userNo가 존재해야 test의 setUp()에서 두 Vo에 UserNo 저장 가능
+			 */
+			 // SELECT LAST_INSERT_ID(자신의 pk_no)
+			 ResultSet rs = pstmt2.executeQuery();
+			 vo.setNo(rs.next() ? rs.getLong(1) : null);
+			 rs.close();
 		} catch(SQLException e) {
 			System.err.println("DB 연결에 실패했습니다.");
 			System.err.println("오류: "+e.getMessage());
@@ -46,8 +51,29 @@ public class UserDao {
 		return count;
 	}
 
-	public List<CartVo> findAll() {
-		return null;
+	public List<UserVo> findAll() {
+		List<UserVo> result = new ArrayList<UserVo>();
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("select name, email, phone from user");
+			ResultSet rs = pstmt.executeQuery();
+		){
+			while(rs.next()) {
+				String name=rs.getString(1);
+				String email=rs.getString(2);
+				String phone=rs.getString(3);
+				
+				UserVo vo = new UserVo(name, email, phone);
+				
+				result.add(vo);
+			}
+		} catch (SQLException e) {
+			System.err.println("DB 연결에 실패했습니다.");
+			System.err.println("오류: "+e.getMessage());
+		}
+		
+		return result;
 	}
 
 	// Driver 로딩, Connection 연결 처리

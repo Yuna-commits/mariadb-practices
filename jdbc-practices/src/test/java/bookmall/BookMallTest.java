@@ -107,26 +107,26 @@ public class BookMallTest {
 	public void testUser() {
 		assertEquals(2, userDao.findAll().size());
 	}
-//
-//	@Test
-//	public void testCategory() {
-//		assertEquals(3, categoryDao.findAll().size());
-//	}
-//
-//	@Test
-//	public void testCart() {
-//		List<CartVo> list = cartDao.findByUserNo(mockUserVo01.getNo());
-//
-//		assertEquals(2, list.size());
-//		assertEquals(mockBookVo01.getNo(), list.get(0).getBookNo());
-//		assertEquals(mockBookVo01.getTitle(), list.get(0).getBookTitle());
-//		assertEquals(mockCartVo01.getQuantity(), list.get(0).getQuantity());
-//		
-//		assertEquals(mockBookVo02.getNo(), list.get(1).getBookNo());
-//		assertEquals(mockBookVo02.getTitle(), list.get(1).getBookTitle());
-//		assertEquals(mockCartVo02.getQuantity(), list.get(1).getQuantity());
-//	}
-//
+
+	@Test
+	public void testCategory() {
+		assertEquals(3, categoryDao.findAll().size());
+	}
+
+	@Test
+	public void testCart() {
+		List<CartVo> list = cartDao.findByUserNo(mockUserVo01.getNo());
+
+		assertEquals(2, list.size());
+		assertEquals(mockBookVo01.getNo(), list.get(0).getBookNo());
+		assertEquals(mockBookVo01.getTitle(), list.get(0).getBookTitle());
+		assertEquals(mockCartVo01.getQuantity(), list.get(0).getQuantity());
+		
+		assertEquals(mockBookVo02.getNo(), list.get(1).getBookNo());
+		assertEquals(mockBookVo02.getTitle(), list.get(1).getBookTitle());
+		assertEquals(mockCartVo02.getQuantity(), list.get(1).getQuantity());
+	}
+
 //	@Test
 //	public void testOrder() {
 //		OrderVo vo = null;

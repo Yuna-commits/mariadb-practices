@@ -5,7 +5,11 @@ public class CategoryVo {
 	private String type;
 
 	public CategoryVo(String type) {
-		super();
+		this.type = type;
+	}
+
+	public CategoryVo(int no, String type) {
+		this.no = no;
 		this.type = type;
 	}
 
@@ -24,5 +28,5 @@ public class CategoryVo {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 }

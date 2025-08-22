@@ -7,6 +7,12 @@ public class UserVo {
 	private String password;
 	private String phone;
 
+	public UserVo(String name, String email, String phone) {
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+	}
+
 	public UserVo(String name, String email, String password, String phone) {
 		this.name = name;
 		this.email = email;
@@ -53,5 +59,5 @@ public class UserVo {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+
 }

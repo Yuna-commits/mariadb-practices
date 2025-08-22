@@ -26,10 +26,14 @@ insert into orders_book(orders_no, book_no, quantity, price) values(1, 1, 1, 200
 select no, name, email, phone from user;
 -- category
 select no, type from category;
--- book
-select a.no, a.title, a.price, b.type from book a join category b on a.category_no=b.no;
+
+--
+-- findByUserNo
 -- cart
-select b.no, a.title, c.name, b.quantity from book a join cart b on a.no = b.book_no join user c on b.user_no = c.no;
+select cart.no, user.name, book.title, cart.quantity from book join cart on book.no = cart.book_no join user on cart.user_no = user.no where cart.user_no = 1;
 -- orders
 select a.no, a.user_no, a.number, a.payment, a.shipping, a.status from orders a join user b on a.user_no = b.no;
 -- orders_book
+
+-- book
+select a.no, a.title, a.price, b.type from book a join category b on a.category_no=b.no;

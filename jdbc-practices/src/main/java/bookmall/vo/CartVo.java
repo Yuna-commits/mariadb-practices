@@ -4,7 +4,9 @@ public class CartVo {
 	private Long no;
 	private int quantity;
 
+	// user, book table의 속성
 	private Long userNo;
+	private String userName;
 	private Long bookNo;
 	private String bookTitle;
 
@@ -32,6 +34,14 @@ public class CartVo {
 		this.userNo = userNo;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	public Long getBookNo() {
 		return bookNo;
 	}
@@ -47,5 +57,5 @@ public class CartVo {
 	public void setBookTitle(String bookTitle) {
 		this.bookTitle = bookTitle;
 	}
-	
+
 }

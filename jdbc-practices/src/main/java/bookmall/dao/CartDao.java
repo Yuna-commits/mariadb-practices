@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import bookmall.vo.CartVo;
 
@@ -36,6 +38,47 @@ public class CartDao {
 		}
 
 		return count;
+	}
+	
+	// 인자로 들어온 user의 no로 장바구니 조회
+	public List<CartVo> findByUserNo(Long userNo) {
+		List<CartVo> result = new ArrayList<CartVo>();
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn
+					.prepareStatement("select cart.no, user.name, book.no, book.title, cart.quantity "
+							+ "from book join cart on book.no = cart.book_no join user on cart.user_no = user.no "
+							+ "where cart.user_no = ?");
+		){
+			pstmt.setLong(1, userNo);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Long cartNo = rs.getLong(1);
+				String userName = rs.getString(2);
+				Long bookNo = rs.getLong(3);
+				String bookTitle = rs.getString(4);
+				int quantity = rs.getInt(5);
+				
+				CartVo vo = new CartVo();
+				vo.setNo(cartNo);
+				vo.setUserName(userName);
+				vo.setBookNo(bookNo);
+				vo.setBookTitle(bookTitle);
+				vo.setQuantity(quantity);
+				
+				result.add(vo);
+			}
+			
+			rs.close();
+		} catch (SQLException e) {
+			System.err.println("DB 연결에 실패했습니다.");
+			System.err.println("오류: "+e.getMessage());
+		}
+		
+		return result;
 	}
 
 	// Driver 로딩, Connection 연결 처리

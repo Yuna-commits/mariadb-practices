@@ -7,6 +7,7 @@ public class OrderVo {
 	private String shipping; // 배송지
 	private String status; //주문상태
 	
+	// user table의 속성
 	private Long userNo;
 
 	public Long getNo() {

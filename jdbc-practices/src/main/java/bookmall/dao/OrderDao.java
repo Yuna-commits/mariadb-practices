@@ -71,6 +71,10 @@ public class OrderDao {
 
 		return count;
 	}
+	
+	public OrderVo findByNoAndUserNo(long l, Long no) {
+		return null;
+	}
 
 	// Driver 로딩, Connection 연결 처리
 	private Connection getConnection() throws SQLException {

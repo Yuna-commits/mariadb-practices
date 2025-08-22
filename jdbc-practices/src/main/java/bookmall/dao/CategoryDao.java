@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import bookmall.vo.CategoryVo;
 
@@ -20,7 +22,7 @@ public class CategoryDao {
 		) {
 			// INSERT
 			pstmt1.setString(1, vo.getType());
-			
+				
 			// SQL 쿼리를 DB에 실행
 			count = pstmt1.executeUpdate();
 
@@ -34,6 +36,30 @@ public class CategoryDao {
 		}
 
 		return count;
+	}
+	
+	public List<CategoryVo> findAll() {
+		List<CategoryVo> result = new ArrayList<CategoryVo>();
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("select no, type from category");
+			ResultSet rs = pstmt.executeQuery();
+		){
+			while(rs.next()) {
+				int no=rs.getInt(1);
+				String type=rs.getString(2);
+				
+				CategoryVo vo = new CategoryVo(no, type);
+				
+				result.add(vo);
+			}
+		} catch (SQLException e) {
+			System.err.println("DB 연결에 실패했습니다.");
+			System.err.println("오류: "+e.getMessage());
+		}
+		
+		return result;
 	}
 
 	// Driver 로딩, Connection 연결 처리

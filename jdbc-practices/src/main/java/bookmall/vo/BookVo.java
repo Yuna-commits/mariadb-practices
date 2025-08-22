@@ -5,6 +5,7 @@ public class BookVo {
 	private String title;
 	private int price;
 	
+	// category table의 속성
 	private int categoryNo;
 	
 	public BookVo(String title, int price) {

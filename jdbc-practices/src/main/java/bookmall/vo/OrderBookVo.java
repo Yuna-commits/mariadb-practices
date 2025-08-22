@@ -4,7 +4,8 @@ public class OrderBookVo {
 	private Long no;
 	private int quantity; // 주문도서 개별 수량
 	private int price; // 주문도서 개별 금액
-
+	
+	// orders table의 속성
 	private Long orderNo;
 	private Long bookNo;
 	private String bookTitle;
