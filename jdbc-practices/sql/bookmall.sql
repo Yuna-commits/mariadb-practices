@@ -38,3 +38,30 @@ select orders.number, user.name, user.email, orders.status, orders.payment, orde
 -- orders_book
 -- 주문도서는 (도서제목, 수량, 가격)의 내용을 확인할 수 있다.
 select orders.no, book.no, book.title, orders_book.quantity, orders_book.price from orders_book join book on orders_book.book_no = book.no join orders on orders_book.orders_no = orders.no where orders.no =1 and orders.user_no = 1;
+
+--
+-- deleteByNo
+--
+-- orders_book
+select * from orders_book;
+delete from orders_book where orders_no = 1;
+
+-- orders
+select * from orders;
+delete from orders where no = 1;
+
+-- cart
+select * from cart;
+delete from cart where user_no = 1 and book_no = 2;
+
+-- book
+select * from book;
+delete from book where no = 1;
+
+-- category
+select * from category;
+delete from category where no = 1;
+
+-- user
+select * from user;
+delete from user where no = 1;

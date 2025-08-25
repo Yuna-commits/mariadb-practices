@@ -61,6 +61,25 @@ public class CategoryDao {
 		
 		return result;
 	}
+	
+	// 인자로 받은 category의 no로 카테고리 삭제
+	public int deleteByNo(int no) {
+		int result = 0;
+
+		try (
+			Connection con = getConnection(); 
+			PreparedStatement pstmt = con.prepareStatement("delete from category where no = ?");
+		) {
+			pstmt.setLong(1, no);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
 
 	// Driver 로딩, Connection 연결 처리
 	private Connection getConnection() throws SQLException {

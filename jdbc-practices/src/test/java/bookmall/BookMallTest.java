@@ -160,31 +160,31 @@ public class BookMallTest {
 		assertEquals(mockOrderBookVo02.getBookNo(), list.get(1).getBookNo());
 		assertEquals(mockBookVo02.getTitle(), list.get(1).getBookTitle());
 	}
-//
-//	@AfterAll
-//	public static void cleanUp() {
-//		// 주문책
-//		orderDao.deleteBooksByNo(mockOrderVo.getNo());
-//
-//		// 주문
-//		orderDao.deleteByNo(mockOrderVo.getNo());
-//
-//		// 카트
-//		cartDao.deleteByUserNoAndBookNo(mockCartVo01.getUserNo(), mockBookVo01.getNo());
-//		cartDao.deleteByUserNoAndBookNo(mockCartVo02.getUserNo(), mockBookVo02.getNo());
-//
-//		// 서적
-//		bookDao.deleteByNo(mockBookVo01.getNo());
-//		bookDao.deleteByNo(mockBookVo02.getNo());
-//		bookDao.deleteByNo(mockBookVo03.getNo());
-//
-//		// 카테고리
-//		categoryDao.deleteByNo(mockCategoryVo01.getNo());
-//		categoryDao.deleteByNo(mockCategoryVo02.getNo());
-//		categoryDao.deleteByNo(mockCategoryVo03.getNo());
-//
-//		// 사용자
-//		userDao.deleteByNo(mockUserVo01.getNo());
-//		userDao.deleteByNo(mockUserVo02.getNo());
-//	}
+
+	@AfterAll
+	public static void cleanUp() {
+		// 주문책
+		orderDao.deleteBooksByNo(mockOrderVo.getNo());
+
+		// 주문
+		orderDao.deleteByNo(mockOrderVo.getNo());
+
+		// 카트
+		cartDao.deleteByUserNoAndBookNo(mockCartVo01.getUserNo(), mockBookVo01.getNo());
+		cartDao.deleteByUserNoAndBookNo(mockCartVo02.getUserNo(), mockBookVo02.getNo());
+
+		// 서적
+		bookDao.deleteByNo(mockBookVo01.getNo());
+		bookDao.deleteByNo(mockBookVo02.getNo());
+		bookDao.deleteByNo(mockBookVo03.getNo());
+
+		// 카테고리
+		categoryDao.deleteByNo(mockCategoryVo01.getNo());
+		categoryDao.deleteByNo(mockCategoryVo02.getNo());
+		categoryDao.deleteByNo(mockCategoryVo03.getNo());
+
+		// 사용자
+		userDao.deleteByNo(mockUserVo01.getNo());
+		userDao.deleteByNo(mockUserVo02.getNo());
+	}
 }

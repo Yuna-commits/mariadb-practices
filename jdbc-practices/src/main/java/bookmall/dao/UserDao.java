@@ -76,6 +76,24 @@ public class UserDao {
 		return result;
 	}
 
+	// 인자로 받은 user의 no로 회원 삭제
+	public int deleteByNo(Long no) {
+		int result = 0;
+
+		try (
+			Connection con = getConnection(); 
+			PreparedStatement pstmt = con.prepareStatement("delete from user where no = ?");
+		) {
+			pstmt.setLong(1, no);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
 	// Driver 로딩, Connection 연결 처리
 	private Connection getConnection() throws SQLException {
 		Connection conn = null;
@@ -93,4 +111,5 @@ public class UserDao {
 
 		return conn;
 	}
+
 }

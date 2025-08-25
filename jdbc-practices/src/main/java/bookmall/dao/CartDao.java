@@ -40,7 +40,8 @@ public class CartDao {
 		return count;
 	}
 	
-	// 인자로 들어온 user의 no로 회원의 장바구니 조회
+	// 인자로 받은 user의 no로 회원의 장바구니 조회
+	// 요구사항 : 회원은 자신만의 카트가 존재하며, 카트의 내용(도서제목, 수량, 가격)을 확인할 수 있다.
 	public List<CartVo> findByUserNo(Long userNo) {
 		List<CartVo> result = new ArrayList<CartVo>();
 		
@@ -74,6 +75,25 @@ public class CartDao {
 		} catch (SQLException e) {
 			System.err.println("DB 연결에 실패했습니다.");
 			System.err.println("오류: " + e.getMessage());
+		}
+
+		return result;
+	}
+
+	// 인자로 받은 cart의 user_no와 book_no로 장바구니 삭제
+	public int deleteByUserNoAndBookNo(Long userNo, Long bookNo) {
+		int result = 0;
+
+		try (
+			Connection con = getConnection(); 
+			PreparedStatement pstmt = con.prepareStatement("delete from cart where user_no = ? and book_no = ?");
+		) {
+			pstmt.setLong(1, userNo);
+			pstmt.setLong(2, bookNo);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
 		return result;

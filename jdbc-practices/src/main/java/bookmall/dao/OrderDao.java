@@ -75,6 +75,7 @@ public class OrderDao {
 	}
 	
 	// 인자로 받은 orders의 no와 user_no로 회원의 주문내역 조회
+	// 요구사항 : 운영자는 orders를 통해 회원의 주문내용(주문번호, 주문자(이름/이메일), 주문상태, 결제금액, 배송지)을 확인할 수 있다.
 	public OrderVo findByNoAndUserNo(long no, Long userNo) {
 		OrderVo result = null;
 
@@ -116,6 +117,7 @@ public class OrderDao {
 	}
 
 	// 인자로 받은 orders의 no와 user_no로 회원의 주문도서 내역 조회
+	// 요구사항 : 회원은 주문도서의 내용(도서제목, 수량, 가격)을 확인할 수 있다.
 	public List<OrderBookVo> findBooksByNoAndUserNo(Long no, Long userNo) {
 		List<OrderBookVo> result = new ArrayList<OrderBookVo>();
 
@@ -151,6 +153,43 @@ public class OrderDao {
 		} catch (SQLException e) {
 			System.err.println("DB 연결에 실패했습니다.");
 			System.err.println("오류: " + e.getMessage());
+		}
+
+		return result;
+	}
+	
+	// orders의 no로 주문내역 삭제
+	public int deleteByNo(Long no) {
+		int result = 0;
+
+		try (
+			Connection con = getConnection(); 
+			PreparedStatement pstmt = con.prepareStatement("delete from orders where no = ?");
+		) {
+			pstmt.setLong(1, no);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+
+	// orders의 no로 주문도서 내역 삭제
+	public int deleteBooksByNo(Long no) {
+		int result = 0;
+
+		try (
+			Connection con = getConnection(); 
+			PreparedStatement pstmt = con.prepareStatement("delete from orders_book where orders_no = ?");
+		) {
+			pstmt.setLong(1, no);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
 		return result;
