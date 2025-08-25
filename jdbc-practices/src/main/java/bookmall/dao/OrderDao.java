@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import bookmall.vo.OrderBookVo;
 import bookmall.vo.OrderVo;
@@ -72,8 +74,86 @@ public class OrderDao {
 		return count;
 	}
 	
-	public OrderVo findByNoAndUserNo(long l, Long no) {
-		return null;
+	// 인자로 받은 orders의 no와 user_no로 회원의 주문내역 조회
+	public OrderVo findByNoAndUserNo(long no, Long userNo) {
+		OrderVo result = null;
+
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("select orders.number, user.name, user.email, orders.status, orders.payment, orders.shipping "
+					+ "from orders join user on orders.user_no = user.no "
+					+ "where orders.no = ? and user.no = ?");
+		) {
+			pstmt.setLong(1, no);
+			pstmt.setLong(2, userNo);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {// 1건만 반환
+				String number = rs.getString(1);
+				String userName = rs.getString(2);
+				String userEmail = rs.getString(3);
+				String Status = rs.getString(4);
+				int payment = rs.getInt(5);
+				String shipping = rs.getString(6);
+
+				result = new OrderVo();
+				result.setNumber(number);
+				result.setUserName(userName);
+				result.setUserEmail(userEmail);
+				result.setStatus(Status);
+				result.setPayment(payment);
+				result.setShipping(shipping);
+			}
+
+			rs.close();
+		} catch (SQLException e) {
+			System.err.println("DB 연결에 실패했습니다.");
+			System.err.println("오류: " + e.getMessage());
+		}
+
+		return result;
+	}
+
+	// 인자로 받은 orders의 no와 user_no로 회원의 주문도서 내역 조회
+	public List<OrderBookVo> findBooksByNoAndUserNo(Long no, Long userNo) {
+		List<OrderBookVo> result = new ArrayList<OrderBookVo>();
+
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("select orders.no, book.no, book.title, orders_book.quantity, orders_book.price "
+					+ "from orders_book join book on orders_book.book_no = book.no join orders on orders_book.orders_no = orders.no "
+					+ "where orders.no = ? and orders.user_no = ?");
+		) {
+			pstmt.setLong(1, no);
+			pstmt.setLong(2, userNo);
+
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Long orderNo = rs.getLong(1);
+				Long bookNo = rs.getLong(2);
+				String bookTitle = rs.getString(3);
+				int quantity = rs.getInt(4);
+				int price = rs.getInt(5);
+				
+				OrderBookVo vo = new OrderBookVo();
+				vo.setOrderNo(orderNo);
+				vo.setBookNo(bookNo);
+				vo.setBookTitle(bookTitle);
+				vo.setQuantity(quantity);
+				vo.setPrice(price);
+				
+				result.add(vo);
+			}
+			
+			rs.close();
+		} catch (SQLException e) {
+			System.err.println("DB 연결에 실패했습니다.");
+			System.err.println("오류: " + e.getMessage());
+		}
+
+		return result;
 	}
 
 	// Driver 로딩, Connection 연결 처리

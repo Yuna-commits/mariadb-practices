@@ -9,6 +9,8 @@ public class OrderVo {
 	
 	// user table의 속성
 	private Long userNo;
+	private String userName;
+	private String userEmail;
 
 	public Long getNo() {
 		return no;
@@ -56,6 +58,30 @@ public class OrderVo {
 
 	public void setUserNo(Long userNo) {
 		this.userNo = userNo;
+	}
+	
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+
+	@Override
+	public String toString() {
+		return "OrderVo [no=" + no + ", number=" + number + ", payment=" + payment + ", shipping=" + shipping
+				+ ", status=" + status + ", userNo=" + userNo + ", userName=" + userName + ", userEmail=" + userEmail
+				+ "]";
 	}
 
 }

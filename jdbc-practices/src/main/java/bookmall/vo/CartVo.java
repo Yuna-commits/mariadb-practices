@@ -9,6 +9,7 @@ public class CartVo {
 	private String userName;
 	private Long bookNo;
 	private String bookTitle;
+	private int bookPrice;
 
 	public Long getNo() {
 		return no;
@@ -56,6 +57,14 @@ public class CartVo {
 
 	public void setBookTitle(String bookTitle) {
 		this.bookTitle = bookTitle;
+	}
+
+	public int getBookPrice() {
+		return bookPrice;
+	}
+
+	public void setBookPrice(int bookPrice) {
+		this.bookPrice = bookPrice;
 	}
 
 }

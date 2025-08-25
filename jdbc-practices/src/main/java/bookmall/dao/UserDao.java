@@ -59,18 +59,18 @@ public class UserDao {
 			PreparedStatement pstmt = conn.prepareStatement("select name, email, phone from user");
 			ResultSet rs = pstmt.executeQuery();
 		){
-			while(rs.next()) {
-				String name=rs.getString(1);
-				String email=rs.getString(2);
-				String phone=rs.getString(3);
-				
+			while (rs.next()) {
+				String name = rs.getString(1);
+				String email = rs.getString(2);
+				String phone = rs.getString(3);
+
 				UserVo vo = new UserVo(name, email, phone);
-				
+
 				result.add(vo);
 			}
 		} catch (SQLException e) {
 			System.err.println("DB 연결에 실패했습니다.");
-			System.err.println("오류: "+e.getMessage());
+			System.err.println("오류: " + e.getMessage());
 		}
 		
 		return result;
@@ -88,7 +88,7 @@ public class UserDao {
 
 		} catch (ClassNotFoundException e) {
 			System.err.println("JDBC 드라이버 클래스를 찾을 수 없습니다.");
-			System.err.println("오류: "+e.getMessage());
+			System.err.println("오류: " + e.getMessage());
 		}
 
 		return conn;
