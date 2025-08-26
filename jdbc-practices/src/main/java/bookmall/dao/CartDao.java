@@ -13,25 +13,25 @@ import bookmall.vo.CartVo;
 public class CartDao {
 
 	public int insert(CartVo vo) {
-		int count = 0;
+		int result = 0;
 
 		try (
 			Connection conn = getConnection();
 			PreparedStatement pstmt1 = conn.prepareStatement("insert into cart(user_no, book_no, quantity) values(?, ?, ?)");
 		) {
-			// INSERT
+			// Parameter Binding
 			pstmt1.setLong(1, vo.getUserNo());
 			pstmt1.setLong(2, vo.getBookNo());
 			pstmt1.setLong(3, vo.getQuantity());
 
 			// SQL 쿼리를 DB에 실행
-			count = pstmt1.executeUpdate();
+			result = pstmt1.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println("DB 연결에 실패했습니다.");
 			System.err.println("오류: " + e.getMessage());
 		}
 
-		return count;
+		return result;
 	}
 	
 	// 인자로 받은 user의 no로 회원의 장바구니 조회

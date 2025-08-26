@@ -13,7 +13,7 @@ import bookmall.vo.CategoryVo;
 public class CategoryDao {
 
 	public int insert(CategoryVo vo) {
-		int count = 0;
+		int result = 0;
 		
 		try(
 			Connection conn=getConnection();
@@ -24,7 +24,7 @@ public class CategoryDao {
 			pstmt1.setString(1, vo.getType());
 				
 			// SQL 쿼리를 DB에 실행
-			count = pstmt1.executeUpdate();
+			result = pstmt1.executeUpdate();
 
 			// SELECT LAST_INSERT_ID(자신의 pk_no)
 			// category는 book과 1 : N 관계, BookVo의 categoryNo를 위해 필요
@@ -36,7 +36,7 @@ public class CategoryDao {
 			System.err.println("오류: "+e.getMessage());
 		}
 
-		return count;
+		return result;
 	}
 	
 	public List<CategoryVo> findAll() {

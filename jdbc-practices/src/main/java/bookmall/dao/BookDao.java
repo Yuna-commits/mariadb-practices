@@ -11,7 +11,7 @@ import bookmall.vo.BookVo;
 public class BookDao {
 
 	public int insert(BookVo vo) {
-		int count = 0;
+		int result = 0;
 
 		try (
 			Connection conn = getConnection();
@@ -25,7 +25,7 @@ public class BookDao {
 			pstmt1.setInt(3, vo.getPrice());
 
 			// SQL 쿼리를 DB에 실행
-			count = pstmt1.executeUpdate();
+			result = pstmt1.executeUpdate();
 
 			// SELECT LAST_INSERT_ID(자신의 pk_no)
 			// book은 orders_book, cart와 1 : N 관계, OrderBookVo, CartVo의 bookNo를 위해 필요
@@ -37,7 +37,7 @@ public class BookDao {
 			System.err.println("오류: " + e.getMessage());
 		}
 
-		return count;
+		return result;
 	}
 	
 	// 인자로 받은 book의 no로 book 삭제
@@ -52,7 +52,8 @@ public class BookDao {
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println("DB 연결에 실패했습니다.");
+			System.err.println("오류: " + e.getMessage());
 		}
 
 		return result;

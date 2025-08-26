@@ -14,7 +14,7 @@ import bookmall.vo.OrderVo;
 public class OrderDao {
 
 	public int insert(OrderVo vo) {
-		int count = 0;
+		int result = 0;
 
 		try (
 			Connection conn = getConnection();
@@ -22,7 +22,7 @@ public class OrderDao {
 					"insert into orders(user_no, number, payment, shipping, status) values(?, ?, ?, ?, ?)");
 			PreparedStatement pstmt2 = conn.prepareStatement("select last_insert_id()");
 		) {
-			// INSERT
+			// Parameter Binding
 			pstmt1.setLong(1, vo.getUserNo());
 			pstmt1.setString(2, vo.getNumber());
 			pstmt1.setLong(3, vo.getPayment());
@@ -30,7 +30,7 @@ public class OrderDao {
 			pstmt1.setString(5, vo.getStatus());
 
 			// SQL 쿼리를 DB에 실행
-			count = pstmt1.executeUpdate();
+			result = pstmt1.executeUpdate();
 
 			// SELECT LAST_INSERT_ID(자신의 pk_no)
 			// orders는 orders_book과 1 : N 관계, OrderBookVo의 orderNo를 위해 필요
@@ -42,11 +42,11 @@ public class OrderDao {
 			System.err.println("오류: " + e.getMessage());
 		}
 
-		return count;
+		return result;
 	}
 	
 	public int insertBook(OrderBookVo bookVo) {
-		int count = 0;
+		int result = 0;
 
 		try (
 			Connection conn = getConnection();
@@ -60,13 +60,13 @@ public class OrderDao {
 			pstmt1.setInt(4, bookVo.getPrice());
 
 			// SQL 쿼리를 DB에 실행
-			count = pstmt1.executeUpdate();
+			result = pstmt1.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println("DB 연결에 실패했습니다.");
 			System.err.println("오류: " + e.getMessage());
 		}
 
-		return count;
+		return result;
 	}
 	
 	// 인자로 받은 orders의 no와 user_no로 회원의 주문내역 조회

@@ -13,7 +13,7 @@ import bookmall.vo.UserVo;
 public class UserDao {
 
 	public int insert(UserVo vo) {
-		int count = 0;
+		int result = 0;
 
 		try(
 			Connection conn=getConnection();
@@ -32,7 +32,7 @@ public class UserDao {
 			pstmt1.setString(4, vo.getPhone());
 			
 			// SQL 쿼리를 DB에 실행
-			count = pstmt1.executeUpdate();
+			result = pstmt1.executeUpdate();
 			
 			/**
 			 * UserVo.setNo()가 필요한 이유
@@ -48,7 +48,7 @@ public class UserDao {
 			System.err.println("오류: "+e.getMessage());
 		}
 		
-		return count;
+		return result;
 	}
 
 	public List<UserVo> findAll() {
