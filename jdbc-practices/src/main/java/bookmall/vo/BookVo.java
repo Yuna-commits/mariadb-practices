@@ -9,7 +9,6 @@ public class BookVo {
 	private int categoryNo;
 	
 	public BookVo(String title, int price) {
-		super();
 		this.title = title;
 		this.price = price;
 	}

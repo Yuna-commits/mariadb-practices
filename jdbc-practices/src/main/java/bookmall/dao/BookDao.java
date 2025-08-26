@@ -18,7 +18,7 @@ public class BookDao {
 			PreparedStatement pstmt1 = conn.prepareStatement("insert into book(category_no, title, price) values(?, ?, ?)");
 			PreparedStatement pstmt2 = conn.prepareStatement("select last_insert_id()");
 		) {
-			// INSERT
+			// Parameter Binding
 			// Test setup에서 BookVo에 CategoryNo를 미리 저장했기 때문에 가능
 			pstmt1.setInt(1, vo.getCategoryNo());
 			pstmt1.setString(2, vo.getTitle());
@@ -28,6 +28,7 @@ public class BookDao {
 			count = pstmt1.executeUpdate();
 
 			// SELECT LAST_INSERT_ID(자신의 pk_no)
+			// book은 orders_book, cart와 1 : N 관계, OrderBookVo, CartVo의 bookNo를 위해 필요
 			ResultSet rs = pstmt2.executeQuery();
 			vo.setNo(rs.next() ? rs.getLong(1) : null);
 			rs.close();
@@ -39,7 +40,7 @@ public class BookDao {
 		return count;
 	}
 	
-	// 인자로 받은 book의 no로 도서 삭제
+	// 인자로 받은 book의 no로 book 삭제
 	public int deleteByNo(Long no) {
 		int result = 0;
 

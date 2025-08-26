@@ -4,12 +4,9 @@ public class CategoryVo {
 	private int no;
 	private String type;
 
-	public CategoryVo(String type) {
-		this.type = type;
-	}
+	public CategoryVo() {}
 
-	public CategoryVo(int no, String type) {
-		this.no = no;
+	public CategoryVo(String type) {
 		this.type = type;
 	}
 

@@ -20,13 +20,14 @@ public class CategoryDao {
 			PreparedStatement pstmt1 = conn.prepareStatement("insert into category(type) value(?)");
 			PreparedStatement pstmt2 = conn.prepareStatement("select last_insert_id()");
 		) {
-			// INSERT
+			// Parameter Binding
 			pstmt1.setString(1, vo.getType());
 				
 			// SQL 쿼리를 DB에 실행
 			count = pstmt1.executeUpdate();
 
 			// SELECT LAST_INSERT_ID(자신의 pk_no)
+			// category는 book과 1 : N 관계, BookVo의 categoryNo를 위해 필요
 			ResultSet rs = pstmt2.executeQuery();
 			vo.setNo(rs.next() ? rs.getInt(1) : null);
 			rs.close();
@@ -46,12 +47,14 @@ public class CategoryDao {
 			PreparedStatement pstmt = conn.prepareStatement("select no, type from category");
 			ResultSet rs = pstmt.executeQuery();
 		){
-			while(rs.next()) {
-				int no=rs.getInt(1);
-				String type=rs.getString(2);
-				
-				CategoryVo vo = new CategoryVo(no, type);
-				
+			while (rs.next()) {
+				int no = rs.getInt(1);
+				String type = rs.getString(2);
+
+				CategoryVo vo = new CategoryVo();
+				vo.setNo(no);
+				vo.setType(type);
+
 				result.add(vo);
 			}
 		} catch (SQLException e) {
@@ -62,7 +65,7 @@ public class CategoryDao {
 		return result;
 	}
 	
-	// 인자로 받은 category의 no로 카테고리 삭제
+	// 인자로 받은 category의 no로 category 삭제
 	public int deleteByNo(int no) {
 		int result = 0;
 

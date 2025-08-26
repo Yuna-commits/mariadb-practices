@@ -33,6 +33,7 @@ public class OrderDao {
 			count = pstmt1.executeUpdate();
 
 			// SELECT LAST_INSERT_ID(자신의 pk_no)
+			// orders는 orders_book과 1 : N 관계, OrderBookVo의 orderNo를 위해 필요
 			ResultSet rs = pstmt2.executeQuery();
 			vo.setNo(rs.next() ? rs.getLong(1) : null);
 			rs.close();
@@ -51,7 +52,6 @@ public class OrderDao {
 			Connection conn = getConnection();
 			PreparedStatement pstmt1 = conn.prepareStatement(
 					"insert into orders_book(orders_no, book_no, quantity, price) values(?, ?, ?, ?)");
-			PreparedStatement pstmt2 = conn.prepareStatement("select last_insert_id()");
 		) {
 			// INSERT
 			pstmt1.setLong(1, bookVo.getOrderNo());
@@ -61,11 +61,6 @@ public class OrderDao {
 
 			// SQL 쿼리를 DB에 실행
 			count = pstmt1.executeUpdate();
-
-			// SELECT LAST_INSERT_ID(자신의 pk_no)
-			ResultSet rs = pstmt2.executeQuery();
-			bookVo.setNo(rs.next() ? rs.getLong(1) : null);
-			rs.close();
 		} catch (SQLException e) {
 			System.err.println("DB 연결에 실패했습니다.");
 			System.err.println("오류: " + e.getMessage());
@@ -158,7 +153,7 @@ public class OrderDao {
 		return result;
 	}
 	
-	// orders의 no로 주문내역 삭제
+	// 인자로 받은 orders의 no로 orders 삭제
 	public int deleteByNo(Long no) {
 		int result = 0;
 
@@ -177,7 +172,7 @@ public class OrderDao {
 	}
 
 
-	// orders의 no로 주문도서 내역 삭제
+	// 인자로 받은 orders의 no로 orders_book 내역 삭제
 	public int deleteBooksByNo(Long no) {
 		int result = 0;
 

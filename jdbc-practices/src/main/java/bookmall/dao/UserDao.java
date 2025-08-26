@@ -25,7 +25,7 @@ public class UserDao {
 			 * UserVo.setNo()를 위해 select last_insert_id()로
 			 * **같은 DB conn 내**에서 **가장 마지막에 insert한 테이블**의 auto_increment된 값을 알아야 함
 			 */
-			// INSERT
+			// Parameter Binding
 			pstmt1.setString(1, vo.getName());
 			pstmt1.setString(2, vo.getEmail());
 			pstmt1.setString(3, vo.getPassword());
@@ -64,8 +64,11 @@ public class UserDao {
 				String email = rs.getString(2);
 				String phone = rs.getString(3);
 
-				UserVo vo = new UserVo(name, email, phone);
-
+				UserVo vo = new UserVo();
+				vo.setName(name);
+				vo.setEmail(email);
+				vo.setPhone(phone);
+				
 				result.add(vo);
 			}
 		} catch (SQLException e) {
@@ -76,7 +79,7 @@ public class UserDao {
 		return result;
 	}
 
-	// 인자로 받은 user의 no로 회원 삭제
+	// 인자로 받은 user의 no로 user 삭제
 	public int deleteByNo(Long no) {
 		int result = 0;
 

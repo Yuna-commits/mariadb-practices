@@ -18,7 +18,6 @@ public class CartDao {
 		try (
 			Connection conn = getConnection();
 			PreparedStatement pstmt1 = conn.prepareStatement("insert into cart(user_no, book_no, quantity) values(?, ?, ?)");
-			PreparedStatement pstmt2 = conn.prepareStatement("select last_insert_id()");
 		) {
 			// INSERT
 			pstmt1.setLong(1, vo.getUserNo());
@@ -27,11 +26,6 @@ public class CartDao {
 
 			// SQL 쿼리를 DB에 실행
 			count = pstmt1.executeUpdate();
-
-			// SELECT LAST_INSERT_ID(자신의 pk_no)
-			ResultSet rs = pstmt2.executeQuery();
-			vo.setNo(rs.next() ? rs.getLong(1) : null);
-			rs.close();
 		} catch (SQLException e) {
 			System.err.println("DB 연결에 실패했습니다.");
 			System.err.println("오류: " + e.getMessage());
@@ -50,7 +44,7 @@ public class CartDao {
 			PreparedStatement pstmt = conn
 					.prepareStatement("select book.no, book.title, cart.quantity, book.price "
 							+ "from book join cart on book.no = cart.book_no join user on cart.user_no = user.no "
-							+ "where cart.user_no = ?");
+							+ "where user.no = ?");
 		){
 			pstmt.setLong(1, userNo);
 
@@ -80,7 +74,7 @@ public class CartDao {
 		return result;
 	}
 
-	// 인자로 받은 cart의 user_no와 book_no로 장바구니 삭제
+	// 인자로 받은 cart의 user_no와 book_no로 cart 삭제
 	public int deleteByUserNoAndBookNo(Long userNo, Long bookNo) {
 		int result = 0;
 
